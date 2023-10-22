@@ -13,7 +13,7 @@ let state = {};
 let boardKey = PREFIX + "all";
 
 function mainWrapper() {
-    interval = setInterval(main, 250);
+    interval = setInterval(main, 100);
 }
 
 function main() {
@@ -80,7 +80,6 @@ function main() {
 
 function toggleAll() {
     const currState = state[boardKey] ?? SHOW;
-    console.log(currState);
 
     if (currState === SHOW) {
         this.innerHTML = showAllSvg;
@@ -126,7 +125,6 @@ function showLists(update = false) {
         const value = state[key];
         if (value === HIDE) {
             const list = document.querySelector(`[data-list-id="${listId}"]`);
-            console.log(listId, list);
             list && (list.style.display = "block");
         }
     }
@@ -162,9 +160,7 @@ function markHidden(listId, update = false) {
 
     if (update) {
         const key = PREFIX + listId;
-        chrome.storage.local.set({ [key]: HIDE }).then(() => {
-            console.log(`[Treview] Set ${listId} to hide`);
-        })
+        chrome.storage.local.set({ [key]: HIDE });
     }
 }
 
@@ -181,9 +177,7 @@ function markVisible(listId, update = false) {
 
     if (update) {
         const key = PREFIX + listId;
-        chrome.storage.local.set({ [key]: SHOW }).then(() => {
-            console.log(`[Treview] Set ${listId} to show`);
-        })
+        chrome.storage.local.set({ [key]: SHOW });
     }
 }
 
