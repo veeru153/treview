@@ -31,10 +31,10 @@ function main() {
     headerBtn.onclick = toggleAll;
     boardHeaderBtns.insertBefore(headerBtn, boardHeaderBtns.children[0]);
 
-    const listName = document.querySelector('[data-testid="board-name-display"]');
+    const listName = document.querySelector('[data-testid="list-name"]');
     const listUiColor = window.getComputedStyle(listName).getPropertyValue("color");
-    hideAllSvg = setHideSvgWithColor(listUiColor);
-    showAllSvg = setShowSvgWithColor(listUiColor);
+    hideListSvg = setHideSvgWithColor(listUiColor);
+    showListSvg = setShowSvgWithColor(listUiColor);
 
     // Set Keys in State and update UI
     const boardId = window.location.pathname.split("/")[2];
