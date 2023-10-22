@@ -1,15 +1,16 @@
 window.addEventListener("load", mainWrapper, false);
 
+const PREFIX = "treview_";
+const TOGGLE_PREFIX = PREFIX + "btn_";
+const SHOW = "show";
+const HIDE = "hide";
+
 let board = null;
 let lists = null;
 let boardHeaderBtns = null;
 let interval = null;
 let state = {};
-const PREFIX = "treview_";
-const TOGGLE_PREFIX = PREFIX + "btn_";
-const ALL_KEY = PREFIX + "all";
-const SHOW = "show";
-const HIDE = "hide";
+let boardKey = PREFIX + "all";
 
 function mainWrapper() {
     interval = setInterval(main, 250);
@@ -21,11 +22,26 @@ function main() {
     if (lists == null || boardHeaderBtns == null) return;
 
     clearInterval(interval);
+
+    // Update UI to Match Theme
+    const boardName = document.querySelector('[data-testid="board-name-display"]');
+    const boardColor = window.getComputedStyle(boardName).getPropertyValue("color");
+    hideAllSvg = setHideSvgWithColor(boardColor);
+    showAllSvg = setShowSvgWithColor(boardColor);
     headerBtn.onclick = toggleAll;
     boardHeaderBtns.insertBefore(headerBtn, boardHeaderBtns.children[0]);
 
+    const listName = document.querySelector('[data-testid="board-name-display"]');
+    const listUiColor = window.getComputedStyle(listName).getPropertyValue("color");
+    hideAllSvg = setHideSvgWithColor(listUiColor);
+    showAllSvg = setShowSvgWithColor(listUiColor);
+
+    // Set Keys in State and update UI
+    const boardId = window.location.pathname.split("/")[2];
+    boardKey = PREFIX + boardId;
+
     const listHeaders = document.querySelectorAll('[data-testid="list-header"]');
-    const listKeys = [ALL_KEY];
+    const listKeys = [boardKey];
 
     for (let i = 0; i < lists.length; i++) {
         const list = lists[i];
@@ -41,8 +57,8 @@ function main() {
 
     chrome.storage.local.get(listKeys).then((res) => {
         state = { ...state, ...res };
-        const allState = res[ALL_KEY];
-        delete res[ALL_KEY];
+        const allState = res[boardKey];
+        delete res[boardKey];
         if (allState === HIDE) {
             headerBtn.innerHTML = showAllSvg;
             hideLists();
@@ -63,16 +79,16 @@ function main() {
 }
 
 function toggleAll() {
-    const currState = state[ALL_KEY] ?? SHOW;
+    const currState = state[boardKey] ?? SHOW;
     console.log(currState);
 
     if (currState === SHOW) {
         this.innerHTML = showAllSvg;
-        state[ALL_KEY] = HIDE;
+        state[boardKey] = HIDE;
         hideLists(true);
     } else if (currState === HIDE) {
         this.innerHTML = hideAllSvg;
-        state[ALL_KEY] = SHOW;
+        state[boardKey] = SHOW;
         showLists(true);
     } else {
         console.log(`[Treview] Invalid State on ALL`);
@@ -81,7 +97,7 @@ function toggleAll() {
 
 function hideLists(update = false) {
     for (const key in state) {
-        if (key === ALL_KEY) continue;
+        if (key === boardKey) continue;
         const listId = key.substring(PREFIX.length);
         const listBtn = document.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
         listBtn && (listBtn.style.display = "none");
@@ -94,7 +110,7 @@ function hideLists(update = false) {
     }
 
     if (update) {
-        chrome.storage.local.set({ [ALL_KEY]: HIDE }).then(() => {
+        chrome.storage.local.set({ [boardKey]: HIDE }).then(() => {
             console.log(`[Treview] Set all to hide`);
         })
     }
@@ -102,7 +118,7 @@ function hideLists(update = false) {
 
 function showLists(update = false) {
     for (const key in state) {
-        if (key === ALL_KEY) continue;
+        if (key === boardKey) continue;
         const listId = key.substring(PREFIX.length);
         const listBtn = document.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
         listBtn && (listBtn.style.display = "flex");
@@ -116,7 +132,7 @@ function showLists(update = false) {
     }
 
     if (update) {
-        chrome.storage.local.set({ [ALL_KEY]: SHOW }).then(() => {
+        chrome.storage.local.set({ [boardKey]: SHOW }).then(() => {
             console.log(`[Treview] Set all to show`);
         })
     }
@@ -137,6 +153,7 @@ function toggleList() {
 
 function markHidden(listId, update = false) {
     const list = document.querySelector(`[data-list-id="${listId}"]`);
+    if (!list) return;
     const toggle = list.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
     toggle.innerHTML = showListSvg;
     state[PREFIX + listId] = HIDE;
@@ -153,6 +170,7 @@ function markHidden(listId, update = false) {
 
 function markVisible(listId, update = false) {
     const list = document.querySelector(`[data-list-id="${listId}"]`);
+    if (!list) return;
     const toggle = list.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
     toggle.innerHTML = hideListSvg;
     state[PREFIX + listId] = SHOW;
