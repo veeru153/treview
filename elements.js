@@ -9,8 +9,6 @@ function setShowSvgWithColor(color = "rgba(0,0,0,0") {
 let hideAllSvg = setHideSvgWithColor();
 let showAllSvg = setShowSvgWithColor();
 
-// stroke="#182c4e"
-
 const headerBtn = document.createElement("div");
 headerBtn.innerHTML = hideAllSvg;
 headerBtn.style.cursor = "pointer";

@@ -1,7 +1,7 @@
 # Treview
 
 Toggle list visibility in Trello. 
-A replacement for Trellist cause that kept breaking.
+A replacement for Trellists cause that kept breaking.
 
 ## Installation
 
