@@ -14,7 +14,6 @@ headerBtn.style.background = "transparent";
 headerBtn.style.transition = "background 85ms ease";
 headerBtn.onmouseenter = () => { headerBtn.style.background = "#091E4224"; }
 headerBtn.onmouseleave = () => { headerBtn.style.background = "transparent"; }
-headerBtn.dataset.visibility = "hide";
 
 // ============================================================================
 
@@ -35,6 +34,5 @@ function createListBtn() {
     listBtn.style.borderRadius = "8px";
     listBtn.style.background = "transparent";
     listBtn.style.transition = "background 85ms ease";
-    listBtn.dataset.visibility = "hide";
     return listBtn;
 }

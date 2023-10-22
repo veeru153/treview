@@ -44,11 +44,9 @@ function main() {
         const allState = res[ALL_KEY];
         delete res[ALL_KEY];
         if (allState === HIDE) {
-            headerBtn.dataset.visibility = HIDE;
             headerBtn.innerHTML = hideAllSvg;
             hideLists();
         } else {
-            headerBtn.dataset.visibility = SHOW;
             headerBtn.innerHTML = showAllSvg;
             showLists();
         }
@@ -141,7 +139,6 @@ function markHidden(listId, update = false) {
     const list = document.querySelector(`[data-list-id="${listId}"]`);
     const toggle = list.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
     toggle.innerHTML = showListSvg;
-    list.dataset.treviewState = HIDE;
     state[PREFIX + listId] = HIDE;
     list.style.filter = "brightness(0.5)";
     list.style.transition = "filter 85ms ease";
@@ -158,7 +155,6 @@ function markVisible(listId, update = false) {
     const list = document.querySelector(`[data-list-id="${listId}"]`);
     const toggle = list.querySelector(`[data-list-id="${TOGGLE_PREFIX + listId}"]`);
     toggle.innerHTML = hideListSvg;
-    list.dataset.treviewState = SHOW;
     state[PREFIX + listId] = SHOW;
     list.style.filter = "brightness(1)";
     delete list.style.transition;

@@ -3,6 +3,7 @@
     "name": "Treview",
     "version": "1.0",
     "description": "Toggle list visibility in Trello.",
+    "author": "veeru153",
     "permissions": [
         "storage"
     ],
