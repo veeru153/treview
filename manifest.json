@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Treview",
+    "version": "1.0",
+    "description": "Toggle list visibility in Trello.",
+    "permissions": [
+        "storage"
+    ],
+    "icons": {
+        "128": "images/icon128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://trello.com/*"
+            ],
+            "js": [
+                "elements.js",
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ]
+}
