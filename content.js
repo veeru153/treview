@@ -12,7 +12,7 @@ const SHOW = "show";
 const HIDE = "hide";
 
 function mainWrapper() {
-    interval = setInterval(main, 1000);
+    interval = setInterval(main, 250);
 }
 
 function main() {
@@ -44,10 +44,10 @@ function main() {
         const allState = res[ALL_KEY];
         delete res[ALL_KEY];
         if (allState === HIDE) {
-            headerBtn.innerHTML = hideAllSvg;
+            headerBtn.innerHTML = showAllSvg;
             hideLists();
         } else {
-            headerBtn.innerHTML = showAllSvg;
+            headerBtn.innerHTML = hideAllSvg;
             showLists();
         }
 
