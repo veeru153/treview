@@ -43,7 +43,7 @@ function main() {
         state = { ...state, ...res };
         const allState = res[ALL_KEY];
         delete res[ALL_KEY];
-        if (!allState) {
+        if (allState === HIDE) {
             headerBtn.dataset.visibility = HIDE;
             headerBtn.innerHTML = hideAllSvg;
             hideLists();
